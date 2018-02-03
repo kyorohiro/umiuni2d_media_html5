@@ -41,12 +41,14 @@ Future main() async {
       .onClick
       .listen((html.Event e) {
     print("Load");
+    mediaManager.getAudio(getCurrentPlayerId()).prepare();
   });
   html.document
       .querySelector("#Stop")
       .onClick
       .listen((html.Event e) {
     print("Stop");
+    mediaManager.getAudio(getCurrentPlayerId()).stop();
   });
   html.document
       .querySelector("#plus5s")
@@ -54,16 +56,16 @@ Future main() async {
       .listen((html.Event e) async {
     print("+5s");
 
-    double volume = await mediaManager.getAudio(getCurrentPlayerId()).getCurrentTime();
-    mediaManager.getAudio(getCurrentPlayerId()).seek(volume + 5);
+    double currentSec = await mediaManager.getAudio(getCurrentPlayerId()).getCurrentTime();
+    mediaManager.getAudio(getCurrentPlayerId()).seek(currentSec + 5);
   });
   html.document
       .querySelector("#minus5s")
       .onClick
       .listen((html.Event e) async {
     print("-5s");
-    double volume = await mediaManager.getAudio(getCurrentPlayerId()).getCurrentTime();
-    mediaManager.getAudio(getCurrentPlayerId()).seek(volume - 5);
+    double currentSec = await mediaManager.getAudio(getCurrentPlayerId()).getCurrentTime();
+    mediaManager.getAudio(getCurrentPlayerId()).seek(currentSec - 5);
   });
   html.document
       .querySelector("#VolumeUp")
