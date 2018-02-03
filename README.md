@@ -1,22 +1,13 @@
 # umiuni2d_media_html5
 
-A library for Dart developers.
+html part for umiuni2d_media (https://github.com/kyorohiro/umiuni2d_media/)
 
-Created from templates made available by Stagehand under a BSD-style
-[license](https://github.com/dart-lang/stagehand/blob/master/LICENSE).
+# LICENSE
+#### bgm_maoudamashii_acoustic09.mp3 has following license.
+http://maoudamashii.jokersounds.com/music_rule.html
 
-## Usage
+#### bgm_maoudamashii_lastboss0.mp3 has following license.
+http://maoudamashii.jokersounds.com/music_rule.html
 
-A simple usage example:
-
-    import 'package:umiuni2d_media_html5/umiuni2d_media_html5.dart';
-
-    main() {
-      var awesome = new Awesome();
-    }
-
-## Features and bugs
-
-Please file feature requests and bugs at the [issue tracker][tracker].
-
-[tracker]: http://example.com/issues/replaceme
+#### Other
+no license
