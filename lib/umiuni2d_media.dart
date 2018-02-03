@@ -15,7 +15,7 @@ class MediaManager {
   }
 
   Map<String, AudioPlayer> _audioMap = {};
-  Future<AudioPlayer> loadAudio(String playerId, String path) async {
+  Future<AudioPlayer> loadAudioPlayer(String playerId, String path) async {
     String url = "${assetsRoot}${path}";
     AudioPlayer player = new AudioPlayer(playerId, url);
     await player.prepare();
@@ -30,7 +30,7 @@ class MediaManager {
     return player;
   }
 
-  AudioPlayer getAudio(String id) {
+  AudioPlayer getAudioPlayer(String id) {
     return _audioMap[id];
   }
 }

@@ -6,9 +6,9 @@ Future main() async {
   print("Hellom World!!");
   umi.MediaManager mediaManager = new umi.MediaManager(
       "/web/assets");
-  await mediaManager.loadAudio(
+  await mediaManager.loadAudioPlayer(
       "bgm_maoudamashii_acoustic09", "/bgm_maoudamashii_acoustic09.ogg");
-  await mediaManager.loadAudio(
+  await mediaManager.loadAudioPlayer(
       "bgm_maoudamashii_lastboss0", "/bgm_maoudamashii_lastboss0.ogg");
 
   String getCurrentPlayerId() {
@@ -26,7 +26,7 @@ Future main() async {
       .onClick
       .listen((html.Event e) {
     print("Play ${getCurrentPlayerId()}" );
-    mediaManager.getAudio(getCurrentPlayerId()).play();
+    mediaManager.getAudioPlayer(getCurrentPlayerId()).play();
   });
 
   html.document
@@ -34,21 +34,21 @@ Future main() async {
       .onClick
       .listen((html.Event e) {
     print("Pause");
-    mediaManager.getAudio(getCurrentPlayerId()).pause();
+    mediaManager.getAudioPlayer(getCurrentPlayerId()).pause();
   });
   html.document
       .querySelector("#Load")
       .onClick
       .listen((html.Event e) {
     print("Load");
-    mediaManager.getAudio(getCurrentPlayerId()).prepare();
+    mediaManager.getAudioPlayer(getCurrentPlayerId()).prepare();
   });
   html.document
       .querySelector("#Stop")
       .onClick
       .listen((html.Event e) {
     print("Stop");
-    mediaManager.getAudio(getCurrentPlayerId()).stop();
+    mediaManager.getAudioPlayer(getCurrentPlayerId()).stop();
   });
   html.document
       .querySelector("#plus5s")
@@ -56,32 +56,32 @@ Future main() async {
       .listen((html.Event e) async {
     print("+5s");
 
-    double currentSec = await mediaManager.getAudio(getCurrentPlayerId()).getCurrentTime();
-    mediaManager.getAudio(getCurrentPlayerId()).seek(currentSec + 5);
+    double currentSec = await mediaManager.getAudioPlayer(getCurrentPlayerId()).getCurrentTime();
+    mediaManager.getAudioPlayer(getCurrentPlayerId()).seek(currentSec + 5);
   });
   html.document
       .querySelector("#minus5s")
       .onClick
       .listen((html.Event e) async {
     print("-5s");
-    double currentSec = await mediaManager.getAudio(getCurrentPlayerId()).getCurrentTime();
-    mediaManager.getAudio(getCurrentPlayerId()).seek(currentSec - 5);
+    double currentSec = await mediaManager.getAudioPlayer(getCurrentPlayerId()).getCurrentTime();
+    mediaManager.getAudioPlayer(getCurrentPlayerId()).seek(currentSec - 5);
   });
   html.document
       .querySelector("#VolumeUp")
       .onClick
       .listen((html.Event e) async {
     print("VolumeUp");
-    double currentVolume = await mediaManager.getAudio(getCurrentPlayerId()).getVolume();
-    mediaManager.getAudio(getCurrentPlayerId()).setVolume(currentVolume+0.1);
+    double currentVolume = await mediaManager.getAudioPlayer(getCurrentPlayerId()).getVolume();
+    mediaManager.getAudioPlayer(getCurrentPlayerId()).setVolume(currentVolume+0.1);
   });
   html.document
       .querySelector("#VolumeDown")
       .onClick
       .listen((html.Event e) async {
     print("VolumeDown");
-    double currentVolume = await mediaManager.getAudio(getCurrentPlayerId()).getVolume();
-    mediaManager.getAudio(getCurrentPlayerId()).setVolume(currentVolume-0.1);
+    double currentVolume = await mediaManager.getAudioPlayer(getCurrentPlayerId()).getVolume();
+    mediaManager.getAudioPlayer(getCurrentPlayerId()).setVolume(currentVolume-0.1);
   });
 }
 
