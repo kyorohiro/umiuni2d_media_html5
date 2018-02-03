@@ -18,7 +18,14 @@ class MediaManager {
   Future<AudioPlayer> loadAudio(String playerId, String path) async {
     String url = "${assetsRoot}${path}";
     AudioPlayer player = new AudioPlayer(playerId, url);
-    await player.load();
+    await player.prepare();
+    _audioMap[playerId] = player;
+    return player;
+  }
+
+  Future<AudioPlayer> createAudio(String playerId, String path) async {
+    String url = "${assetsRoot}${path}";
+    AudioPlayer player = new AudioPlayer(playerId, url);
     _audioMap[playerId] = player;
     return player;
   }
@@ -39,25 +46,29 @@ class AudioPlayer {
   double pauseAt = 0.0;
   double startAt = 0.0;
   bool isStart = false;
+  bool isPrepare = false;
 
   AudioPlayer(this.id, this.url) {
     context = new AudioContext();
   }
 
-  Future load() async {
+  Future<AudioPlayer> prepare() async {
     pauseAt = 0.0;
     startAt = 0.0;
-    Completer<String> c = new Completer();
+    Completer<AudioPlayer> c = new Completer();
     HttpRequest request = new HttpRequest();
     request.responseType = "arraybuffer";
     request.onLoad.listen((ProgressEvent e) async {
       try {
         buffer = await context.decodeAudioData(request.response);
-        c.complete("");
+        isPrepare = true;
+        c.complete(this);
       } catch(e) {
+        isPrepare = false;
         c.completeError(e);
       }
     });
+
     request.onError.listen((ProgressEvent e) {
       c.completeError(e);
     });
@@ -67,9 +78,7 @@ class AudioPlayer {
     return c.future;
   }
 
-  Future prepare() async {}
-
-  Future<double> getCurentTime() async {
+  Future<double> getCurrentTime() async {
     double t = 0.0;
     if(isStart) {
       t = context.currentTime - startAt;
@@ -79,19 +88,22 @@ class AudioPlayer {
     return t;
   }
 
-  Future<String> seek(double currentTime) async {
-   // print("#A>># ${currentTime}");
+  Future<AudioPlayer> seek(double currentTime) async {
     if(currentTime <0) {
       currentTime = 0.0;
     }
     if(isStart == false) {
       pauseAt = currentTime;
     } else {
-      await start(currentTime: currentTime);
+      await play(currentTime: currentTime);
     }
+    return this;
   }
 
-  Future start({double currentTime=null}) async {
+  Future<AudioPlayer> play({double currentTime=null}) async {
+    if(!isPrepare) {
+      await prepare();
+    }
     await pause();
     if(currentTime == null) {
     } else {
@@ -113,6 +125,10 @@ class AudioPlayer {
   }
 
   Future pause() async {
+    if(!isPrepare) {
+      await prepare();
+    }
+
     if (sourceNode != null) {
       if(isStart == true) {
         pauseAt = context.currentTime - startAt;
@@ -123,7 +139,9 @@ class AudioPlayer {
   }
 
   double _volume = 0.5;
+
   Future<double> getVolume() async => _volume;
+
   void setVolume(double v) {
     _volume = v;
     gain.gain.value = v;

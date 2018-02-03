@@ -26,7 +26,7 @@ Future main() async {
       .onClick
       .listen((html.Event e) {
     print("Play ${getCurrentPlayerId()}" );
-    mediaManager.getAudio(getCurrentPlayerId()).start();
+    mediaManager.getAudio(getCurrentPlayerId()).play();
   });
 
   html.document
@@ -54,7 +54,7 @@ Future main() async {
       .listen((html.Event e) async {
     print("+5s");
 
-    double volume = await mediaManager.getAudio(getCurrentPlayerId()).getCurentTime();
+    double volume = await mediaManager.getAudio(getCurrentPlayerId()).getCurrentTime();
     mediaManager.getAudio(getCurrentPlayerId()).seek(volume + 5);
   });
   html.document
@@ -62,7 +62,7 @@ Future main() async {
       .onClick
       .listen((html.Event e) async {
     print("-5s");
-    double volume = await mediaManager.getAudio(getCurrentPlayerId()).getCurentTime();
+    double volume = await mediaManager.getAudio(getCurrentPlayerId()).getCurrentTime();
     mediaManager.getAudio(getCurrentPlayerId()).seek(volume - 5);
   });
   html.document
