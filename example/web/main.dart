@@ -20,7 +20,6 @@ Future main() async {
     }
   };
 
-  //player.start();
   html.document
       .querySelector("#Play")
       .onClick
@@ -36,6 +35,7 @@ Future main() async {
     print("Pause");
     mediaManager.getAudioPlayer(getCurrentPlayerId()).pause();
   });
+
   html.document
       .querySelector("#Load")
       .onClick
@@ -43,6 +43,7 @@ Future main() async {
     print("Load");
     mediaManager.getAudioPlayer(getCurrentPlayerId()).prepare();
   });
+
   html.document
       .querySelector("#Stop")
       .onClick
@@ -50,6 +51,7 @@ Future main() async {
     print("Stop");
     mediaManager.getAudioPlayer(getCurrentPlayerId()).stop();
   });
+
   html.document
       .querySelector("#plus5s")
       .onClick
@@ -58,7 +60,9 @@ Future main() async {
 
     double currentSec = await mediaManager.getAudioPlayer(getCurrentPlayerId()).getCurrentTime();
     mediaManager.getAudioPlayer(getCurrentPlayerId()).seek(currentSec + 5);
+    print("> ${await mediaManager.getAudioPlayer(getCurrentPlayerId()).getCurrentTime()}");
   });
+
   html.document
       .querySelector("#minus5s")
       .onClick
@@ -66,7 +70,9 @@ Future main() async {
     print("-5s");
     double currentSec = await mediaManager.getAudioPlayer(getCurrentPlayerId()).getCurrentTime();
     mediaManager.getAudioPlayer(getCurrentPlayerId()).seek(currentSec - 5);
+    print("> ${await mediaManager.getAudioPlayer(getCurrentPlayerId()).getCurrentTime()}");
   });
+
   html.document
       .querySelector("#VolumeUp")
       .onClick
@@ -74,7 +80,9 @@ Future main() async {
     print("VolumeUp");
     double currentVolume = await mediaManager.getAudioPlayer(getCurrentPlayerId()).getVolume();
     mediaManager.getAudioPlayer(getCurrentPlayerId()).setVolume(currentVolume+0.1);
+    print("> ${await mediaManager.getAudioPlayer(getCurrentPlayerId()).getVolume()}");
   });
+
   html.document
       .querySelector("#VolumeDown")
       .onClick
@@ -82,6 +90,7 @@ Future main() async {
     print("VolumeDown");
     double currentVolume = await mediaManager.getAudioPlayer(getCurrentPlayerId()).getVolume();
     mediaManager.getAudioPlayer(getCurrentPlayerId()).setVolume(currentVolume-0.1);
+    print("> ${await mediaManager.getAudioPlayer(getCurrentPlayerId()).getVolume()}");
   });
 }
 

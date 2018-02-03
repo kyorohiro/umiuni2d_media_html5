@@ -15,23 +15,54 @@ class MediaManager {
   }
 
   Map<String, AudioPlayer> _audioMap = {};
+
+
+  Future<String> getAssetPath(String key) async {
+    String p = assetsRoot.replaceAll(new RegExp(r"/$"), "");
+    String k = (key).replaceAll(new RegExp(r"^/"), "");
+    return p + "/" + key;
+  }
+
+  Future<MediaManager> setupMedia(String path) async {
+    await MediaManager.loadFromUrl(await getAssetPath(path));
+    return this;
+  }
+
   Future<AudioPlayer> loadAudioPlayer(String playerId, String path) async {
-    String url = "${assetsRoot}${path}";
-    AudioPlayer player = new AudioPlayer(playerId, url);
+    AudioPlayer player = await createAudio(playerId, path);
     await player.prepare();
-    _audioMap[playerId] = player;
     return player;
   }
 
   Future<AudioPlayer> createAudio(String playerId, String path) async {
-    String url = "${assetsRoot}${path}";
-    AudioPlayer player = new AudioPlayer(playerId, url);
+    AudioPlayer player = new AudioPlayer(playerId, await getAssetPath(path));
     _audioMap[playerId] = player;
     return player;
   }
 
   AudioPlayer getAudioPlayer(String id) {
     return _audioMap[id];
+  }
+
+  static Future<HttpRequest> loadFromUrl(String url) async {
+    Completer<HttpRequest> c = new Completer();
+    HttpRequest request = new HttpRequest();
+    request.responseType = "arraybuffer";
+    request.onLoad.listen((ProgressEvent e) async {
+      try {
+        c.complete(request);
+      } catch(e) {
+        c.completeError(e);
+      }
+    });
+
+    request.onError.listen((ProgressEvent e) {
+      c.completeError(e);
+    });
+
+    request.open("GET", url);
+    request.send();
+    return c.future;
   }
 }
 
@@ -61,12 +92,14 @@ class AudioPlayer {
   Future<AudioPlayer> prepare() async {
     _pauseAt = 0.0;
     _startAt = 0.0;
-    _context = new AudioContext();
+
     Completer<AudioPlayer> c = new Completer();
     HttpRequest request = new HttpRequest();
     request.responseType = "arraybuffer";
     request.onLoad.listen((ProgressEvent e) async {
       try {
+        _context = new AudioContext();
+        _gain = _context.createGain();
         _buffer = await _context.decodeAudioData(request.response);
         _isPrepared = true;
         c.complete(this);
@@ -84,6 +117,8 @@ class AudioPlayer {
     request.send();
     return c.future;
   }
+
+
 
   Future<double> getCurrentTime() async {
     double t = 0.0;
@@ -117,12 +152,10 @@ class AudioPlayer {
       _pauseAt = currentTime;
     }
     _sourceNode = _context.createBufferSource();
-    _gain = _context.createGain();
     _sourceNode.connectNode(_gain);
-
     _gain.connectNode(_context.destination);
     _sourceNode.buffer = _buffer;
-    _gain.gain.value = _volume;
+    setVolume(_volume);
     _sourceNode.connectNode(_context.destination);
     _sourceNode.start(0, _pauseAt);
     print("#start ${_pauseAt.toInt()}");
@@ -139,8 +172,8 @@ class AudioPlayer {
     if (_sourceNode != null) {
       if(_isPlaying == true) {
         _pauseAt = _context.currentTime - _startAt;
+        _sourceNode.stop(0);
       }
-      _sourceNode.stop(0);
       _isPlaying = false;
     }
     return this;
@@ -165,9 +198,9 @@ class AudioPlayer {
 
   void setVolume(double v) {
     if(v < 0.0) {
-      v = 0.0;
+       v = 0.0;
     }
     _volume = v;
-    _gain.gain.value = v;
+    _gain.gain.value = v*2-1.0;
   }
 }
