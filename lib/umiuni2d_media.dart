@@ -31,13 +31,13 @@ class MediaManager extends umi.MediaManager {
 
   @override
   Future<AudioPlayer> loadAudioPlayer(String playerId, String path) async {
-    AudioPlayer player = await createAudio(playerId, path);
+    AudioPlayer player = await createAudioPlayer(playerId, path);
     await player.prepare();
     return player;
   }
 
   @override
-  Future<AudioPlayer> createAudio(String playerId, String path) async {
+  Future<AudioPlayer> createAudioPlayer(String playerId, String path) async {
     AudioPlayer player = new AudioPlayer(playerId, await getAssetPath(path));
     _audioMap[playerId] = player;
     return player;
