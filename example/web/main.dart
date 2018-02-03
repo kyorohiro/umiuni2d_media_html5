@@ -1,4 +1,4 @@
-import 'package:umiuni2d_media_html5/umiuni2d_media_html5.dart' as umi;
+import 'package:umiuni2d_media_html5/umiuni2d_media.dart' as umi;
 import 'dart:async';
 import 'dart:html' as html;
 

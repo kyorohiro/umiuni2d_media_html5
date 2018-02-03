@@ -2,8 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0abacc14-1d1b-438b-801f-b5445ac097bc" name="Default" comment="">
+      <change type="MOVED" beforePath="$PROJECT_DIR$/lib/umiuni2d_media_html5.dart" afterPath="$PROJECT_DIR$/lib/umiuni2d_media.dart" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/example/web/main.dart" afterPath="$PROJECT_DIR$/example/web/main.dart" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/umiuni2d_media_html5.dart" afterPath="$PROJECT_DIR$/lib/umiuni2d_media_html5.dart" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -25,11 +26,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="umiuni2d_media_html5.dart" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/lib/umiuni2d_media_html5.dart">
+      <file leaf-file-name="umiuni2d_media.dart" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/lib/umiuni2d_media.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1617">
-              <caret line="139" column="0" lean-forward="true" selection-start-line="139" selection-start-column="0" selection-end-line="139" selection-end-column="0" />
+            <state relative-caret-position="-1061">
+              <caret line="63" column="34" lean-forward="false" selection-start-line="63" selection-start-column="34" selection-end-line="63" selection-end-column="34" />
               <folding>
                 <element signature="e#31#51#0" expanded="true" />
               </folding>
@@ -60,10 +61,10 @@
       <file leaf-file-name="main.dart" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/example/web/main.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="300">
-              <caret line="20" column="4" lean-forward="false" selection-start-line="20" selection-start-column="4" selection-end-line="20" selection-end-column="4" />
+            <state relative-caret-position="-452">
+              <caret line="17" column="12" lean-forward="true" selection-start-line="17" selection-start-column="12" selection-end-line="17" selection-end-column="12" />
               <folding>
-                <element signature="e#0#71#0" expanded="true" />
+                <element signature="e#0#65#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -114,12 +115,13 @@
         <option value="$PROJECT_DIR$/example/web/main.dart" />
         <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/lib/umiuni2d_media_html5.dart" />
+        <option value="$PROJECT_DIR$/lib/umiuni2d_media.dart" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="308" />
-    <option name="y" value="50" />
+    <option name="x" value="610" />
+    <option name="y" value="46" />
     <option name="width" value="1253" />
     <option name="height" value="766" />
   </component>
@@ -294,7 +296,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="308" y="50" width="1253" height="766" extended-state="0" />
+    <frame x="610" y="46" width="1253" height="766" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
@@ -383,14 +385,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/example/web/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="15" column="49" lean-forward="false" selection-start-line="15" selection-start-column="49" selection-end-line="15" selection-end-column="49" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file:///usr/local/Cellar/dart/1.24.3/libexec/lib/web_audio/dart2js/web_audio_dart2js.dart">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="221">
@@ -415,20 +409,28 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/example/web/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="225">
+          <caret line="15" column="49" lean-forward="false" selection-start-line="15" selection-start-column="49" selection-end-line="15" selection-end-column="49" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/example/web/main.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="300">
-          <caret line="20" column="4" lean-forward="false" selection-start-line="20" selection-start-column="4" selection-end-line="20" selection-end-column="4" />
+        <state relative-caret-position="-452">
+          <caret line="17" column="12" lean-forward="true" selection-start-line="17" selection-start-column="12" selection-end-line="17" selection-end-column="12" />
           <folding>
-            <element signature="e#0#71#0" expanded="true" />
+            <element signature="e#0#65#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/umiuni2d_media_html5.dart">
+    <entry file="file://$PROJECT_DIR$/lib/umiuni2d_media.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1617">
-          <caret line="139" column="0" lean-forward="true" selection-start-line="139" selection-start-column="0" selection-end-line="139" selection-end-column="0" />
+        <state relative-caret-position="-1061">
+          <caret line="63" column="34" lean-forward="false" selection-start-line="63" selection-start-column="34" selection-end-line="63" selection-end-column="34" />
           <folding>
             <element signature="e#31#51#0" expanded="true" />
           </folding>

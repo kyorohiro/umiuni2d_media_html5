@@ -36,35 +36,42 @@ class MediaManager {
 }
 
 class AudioPlayer {
-  AudioContext context;
-  AudioBuffer buffer;
-  AudioBufferSourceNode sourceNode = null;
-  GainNode gain;
+  AudioContext _context;
+  AudioBuffer _buffer;
+  AudioBufferSourceNode _sourceNode;
+  GainNode _gain;
 
-  String id;
-  String url;
-  double pauseAt = 0.0;
-  double startAt = 0.0;
-  bool isStart = false;
-  bool isPrepare = false;
+  String _playerId;
+  String get plyerId => _playerId;
+  String _url;
+  String get url => _url;
 
-  AudioPlayer(this.id, this.url) {
-    context = new AudioContext();
+  double _pauseAt = 0.0;
+  double _startAt = 0.0;
+  bool _isPlaying = false;
+  bool get isPlaying => _isPlaying;
+  bool _isPrepared = false;
+  bool get isPrepared => _isPrepared;
+  double _volume = 0.5;
+
+  AudioPlayer(this._playerId, this._url, {double volume=0.5}) {
+    _volume = volume;
   }
 
   Future<AudioPlayer> prepare() async {
-    pauseAt = 0.0;
-    startAt = 0.0;
+    _pauseAt = 0.0;
+    _startAt = 0.0;
+    _context = new AudioContext();
     Completer<AudioPlayer> c = new Completer();
     HttpRequest request = new HttpRequest();
     request.responseType = "arraybuffer";
     request.onLoad.listen((ProgressEvent e) async {
       try {
-        buffer = await context.decodeAudioData(request.response);
-        isPrepare = true;
+        _buffer = await _context.decodeAudioData(request.response);
+        _isPrepared = true;
         c.complete(this);
       } catch(e) {
-        isPrepare = false;
+        _isPrepared = false;
         c.completeError(e);
       }
     });
@@ -73,17 +80,17 @@ class AudioPlayer {
       c.completeError(e);
     });
 
-    request.open("GET", url);
+    request.open("GET", _url);
     request.send();
     return c.future;
   }
 
   Future<double> getCurrentTime() async {
     double t = 0.0;
-    if(isStart) {
-      t = context.currentTime - startAt;
+    if(_isPlaying) {
+      t = _context.currentTime - _startAt;
     } else {
-      t = pauseAt;
+      t = _pauseAt;
     }
     return t;
   }
@@ -92,8 +99,8 @@ class AudioPlayer {
     if(currentTime <0) {
       currentTime = 0.0;
     }
-    if(isStart == false) {
-      pauseAt = currentTime;
+    if(_isPlaying == false) {
+      _pauseAt = currentTime;
     } else {
       await play(currentTime: currentTime);
     }
@@ -101,49 +108,66 @@ class AudioPlayer {
   }
 
   Future<AudioPlayer> play({double currentTime=null}) async {
-    if(!isPrepare) {
+    if(!_isPrepared) {
       await prepare();
     }
     await pause();
     if(currentTime == null) {
     } else {
-      pauseAt = currentTime;
+      _pauseAt = currentTime;
     }
-    sourceNode = context.createBufferSource();
-    gain = context.createGain();
-    sourceNode.connectNode(gain);
+    _sourceNode = _context.createBufferSource();
+    _gain = _context.createGain();
+    _sourceNode.connectNode(_gain);
 
-    gain.connectNode(context.destination);
-    sourceNode.buffer = buffer;
-    gain.gain.value = 0.5;//volume;
-    sourceNode.connectNode(context.destination);
-    sourceNode.start(0, pauseAt);
-    print("#start ${pauseAt.toInt()}");
+    _gain.connectNode(_context.destination);
+    _sourceNode.buffer = _buffer;
+    _gain.gain.value = _volume;
+    _sourceNode.connectNode(_context.destination);
+    _sourceNode.start(0, _pauseAt);
+    print("#start ${_pauseAt.toInt()}");
 
-    isStart = true;
-    startAt = context.currentTime - pauseAt ;
+    _isPlaying = true;
+    _startAt = _context.currentTime - _pauseAt ;
   }
 
-  Future pause() async {
-    if(!isPrepare) {
+  Future<AudioPlayer> pause() async {
+    if(!_isPrepared) {
       await prepare();
     }
 
-    if (sourceNode != null) {
-      if(isStart == true) {
-        pauseAt = context.currentTime - startAt;
+    if (_sourceNode != null) {
+      if(_isPlaying == true) {
+        _pauseAt = _context.currentTime - _startAt;
       }
-      sourceNode.stop(0);
-      isStart = false;
+      _sourceNode.stop(0);
+      _isPlaying = false;
     }
+    return this;
   }
 
-  double _volume = 0.5;
+  FutureOr<AudioPlayer> stop() async {
+    if(_isPlaying) {
+      await pause();
+    }
+    _isPrepared = false;
+    _isPlaying = false;
+    if(_context != null) {
+      _context.close();
+    }
+    return this;
+  }
+
+
+
 
   Future<double> getVolume() async => _volume;
 
   void setVolume(double v) {
+    if(v < 0.0) {
+      v = 0.0;
+    }
     _volume = v;
-    gain.gain.value = v;
+    _gain.gain.value = v;
   }
 }
