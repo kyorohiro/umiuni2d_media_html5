@@ -80,7 +80,7 @@ class AudioPlayer extends umi.AudioPlayer {
   String _url;
 
   @override
-  String get plyerId => _playerId;
+  String get playerId => _playerId;
 
   @override
   String get url => _url;
