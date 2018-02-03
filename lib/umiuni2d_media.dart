@@ -1,19 +1,16 @@
 library umiuni2d_media_html5;
 
 import 'dart:async';
-import 'dart:math'as math;
 import 'dart:html';
-import 'dart:web_gl';
 import 'dart:web_audio';
-import 'dart:typed_data';
-import 'dart:convert' as conv;
-import 'dart:html' as html;
+import 'package:umiuni2d_media/umiuni2d_media.dart' as umi;
 
+class MediaManager extends umi.MediaManager {
 
-class MediaManager {
-
+  @override
   String assetsRoot;
   bool _useFileSystem;
+
   MediaManager(this.assetsRoot,{bool useFileSystem:false}) {
     _useFileSystem = true;
   }
@@ -23,26 +20,30 @@ class MediaManager {
   Future<String> getAssetPath(String key) async {
     String p = assetsRoot.replaceAll(new RegExp(r"/$"), "");
     String k = (key).replaceAll(new RegExp(r"^/"), "");
-    return p + "/" + key;
+    return p + "/" + k;
   }
 
+  @override
   Future<MediaManager> setupMedia(String path) async {
     await MediaManager.loadFromUrl(await getAssetPath(path));
     return this;
   }
 
+  @override
   Future<AudioPlayer> loadAudioPlayer(String playerId, String path) async {
     AudioPlayer player = await createAudio(playerId, path);
     await player.prepare();
     return player;
   }
 
+  @override
   Future<AudioPlayer> createAudio(String playerId, String path) async {
     AudioPlayer player = new AudioPlayer(playerId, await getAssetPath(path));
     _audioMap[playerId] = player;
     return player;
   }
 
+  @override
   AudioPlayer getAudioPlayer(String id) {
     return _audioMap[id];
   }
@@ -69,20 +70,25 @@ class MediaManager {
   }
 }
 
-class AudioPlayer {
+class AudioPlayer extends umi.AudioPlayer {
   AudioContext _context;
   AudioBuffer _buffer;
   AudioBufferSourceNode _sourceNode;
   GainNode _gain;
 
   String _playerId;
-  String get plyerId => _playerId;
   String _url;
+
+  @override
+  String get plyerId => _playerId;
+
+  @override
   String get url => _url;
 
   double _pauseAt = 0.0;
   double _startAt = 0.0;
   bool _isPlaying = false;
+
   bool get isPlaying => _isPlaying;
   bool _isPrepared = false;
   bool get isPrepared => _isPrepared;
@@ -92,6 +98,7 @@ class AudioPlayer {
     _volume = volume;
   }
 
+  @override
   Future<AudioPlayer> prepare() async {
     _pauseAt = 0.0;
     _startAt = 0.0;
@@ -122,7 +129,7 @@ class AudioPlayer {
   }
 
 
-
+  @override
   Future<double> getCurrentTime() async {
     double t = 0.0;
     if(_isPlaying) {
@@ -133,6 +140,7 @@ class AudioPlayer {
     return t;
   }
 
+  @override
   Future<AudioPlayer> seek(double currentTime) async {
     if(currentTime <0) {
       currentTime = 0.0;
@@ -145,6 +153,7 @@ class AudioPlayer {
     return this;
   }
 
+  @override
   Future<AudioPlayer> play({double currentTime=null}) async {
     if(!_isPrepared) {
       await prepare();
@@ -165,8 +174,10 @@ class AudioPlayer {
 
     _isPlaying = true;
     _startAt = _context.currentTime - _pauseAt ;
+    return this;
   }
 
+  @override
   Future<AudioPlayer> pause() async {
     if(!_isPrepared) {
       await prepare();
@@ -182,6 +193,7 @@ class AudioPlayer {
     return this;
   }
 
+  @override
   FutureOr<AudioPlayer> stop() async {
     if(_isPlaying) {
       await pause();
@@ -194,11 +206,10 @@ class AudioPlayer {
     return this;
   }
 
-
-
-
+  @override
   Future<double> getVolume() async => _volume;
 
+  @override
   void setVolume(double v) {
     if(v < 0.0) {
        v = 0.0;
