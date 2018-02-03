@@ -7,15 +7,18 @@ import 'dart:web_gl';
 import 'dart:web_audio';
 import 'dart:typed_data';
 import 'dart:convert' as conv;
+import 'dart:html' as html;
 
 
 class MediaManager {
+
   String assetsRoot;
-  MediaManager(this.assetsRoot) {
+  bool _useFileSystem;
+  MediaManager(this.assetsRoot,{bool useFileSystem:false}) {
+    _useFileSystem = true;
   }
 
   Map<String, AudioPlayer> _audioMap = {};
-
 
   Future<String> getAssetPath(String key) async {
     String p = assetsRoot.replaceAll(new RegExp(r"/$"), "");
