@@ -11,6 +11,7 @@ dependencies:
   umiuni2d_media:
     git:
       url: https://github.com/kyorohiro/umiuni2d_media.git
+      ref: v0.0.1
 
 dev_dependencies:
   test: ^0.12.0
